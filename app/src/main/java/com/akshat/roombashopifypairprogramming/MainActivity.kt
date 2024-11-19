@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -50,25 +52,19 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun RoombaGrid(roombaX: Int, roombaY: Int, roombaDirection: Direction) {
     val gridSize = 10
-
     LazyVerticalGrid(
-        columns = GridCells.Fixed(gridSize),
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1f)
-            .background(Color.Black)
+        columns = GridCells.Fixed(gridSize)
     ) {
         items(gridSize * gridSize) { index ->
             val x = index % gridSize
             val y = index / gridSize
-
             Box(
                 modifier = Modifier
-                    .size(36.dp)
-                    .background(if (x == roombaX && y == roombaY) Color.White else Color.White)
-                    .padding(1.dp),
-                contentAlignment = Alignment.Center
+                    .aspectRatio(1f)
+                    .background(color = Color.White)
+                    .border(1.dp, Color.Black), contentAlignment = Alignment.Center
             ) {
+
                 if (x == roombaX && y == roombaY) {
                     Text(
                         text = when (roombaDirection) {
@@ -76,17 +72,12 @@ fun RoombaGrid(roombaX: Int, roombaY: Int, roombaDirection: Direction) {
                             Direction.RIGHT -> "→"
                             Direction.DOWN -> "↓"
                             Direction.LEFT -> "←"
-                        },
-                        color = Color.Blue,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
+                        }, color = Color.Blue, fontSize = 18.sp, fontWeight = FontWeight.Bold
                     )
                 }
             }
 
-
         }
-
     }
 
 }
@@ -111,10 +102,8 @@ fun RoombaApp() {
             )
 
             Text(
-                text = "Position: ($x, $y)\nFacing: $direction",
-                modifier = Modifier.padding(16.dp)
+                text = "Position: ($x, $y)\nFacing: $direction", modifier = Modifier.padding(16.dp)
             )
-            Spacer(modifier = Modifier.height(8.dp))
 
 
             Button(
@@ -123,8 +112,7 @@ fun RoombaApp() {
                     x = roomba.x
                     y = roomba.y
                     direction = roomba.direction
-                },
-                modifier = Modifier
+                }, modifier = Modifier
                     .padding(8.dp)
                     .fillMaxWidth()
             ) {
@@ -135,8 +123,7 @@ fun RoombaApp() {
                 onClick = {
                     roomba.turnRight()
                     direction = roomba.direction
-                },
-                modifier = Modifier
+                }, modifier = Modifier
                     .padding(8.dp)
                     .fillMaxWidth()
             ) {
